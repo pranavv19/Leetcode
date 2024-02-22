@@ -1,57 +1,47 @@
 class Solution {
-    public int[] searchRange(int[] nums, int target) {
-        int[] arr=new int[2];
-        arr[0]=firstOccurrence(nums,target);
-        arr[1]=lastOccurrence(nums,target);
+    public int[] searchRange(int[] nums, int target) 
+    {
+        int low=lb(nums,target);
+        if(low==nums.length||nums[low]!=target)
+        return new int[]{-1,-1};
+        int last=ub(nums,target)-1;
+        return new int[]{low,last};
         
-        if (arr[0] == -1 || arr[1] == -1) {
-            return new int[]{-1, -1};
-        }
-        
-        return arr;
     }
+    public int ub(int[] arr,int x)
+    {
+        int n=arr.length;
     
-    public int firstOccurrence(int[] arr,int target){
-        int start = 0;
-        int end = arr.length -1;
+        int low = 0, high = n - 1;
+        int ans = n;
 
-        int ans = -1;
-        while(start <= end){
-            int mid = start + (end - start)/2;
-            int midElement = arr[mid];
-
-            if(midElement == target) {
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (arr[mid] > x) {
                 ans = mid;
-                end = mid -1;
-            }
-            else if(target < midElement){
-                end = mid -1;
+                high = mid - 1;
             }
             else {
-                start = mid + 1;
-            }
+                low = mid + 1; 
+                }
         }
         return ans;
     }
-    
-    public int lastOccurrence(int[] arr,int target){
-        int start = 0;
-        int end = arr.length -1;
-
-        int ans = -1;
-        while(start <= end){
-            int mid = start + (end - start)/2;
-            int midElement = arr[mid];
-
-            if(target == midElement){
+    public int lb(int[] arr,int x)
+    {
+        int low = 0, high = arr.length - 1;
+        int ans = arr.length;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            if (arr[mid] >= x)
+            {
                 ans = mid;
-                start = mid + 1;
+                high = mid - 1;
             }
-            else if(target < midElement){
-                end = mid -1;
-            }
-            else{
-                start = mid + 1;
+            else
+            {
+                low = mid + 1; 
             }
         }
         return ans;
